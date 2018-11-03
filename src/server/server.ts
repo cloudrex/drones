@@ -1,13 +1,40 @@
 import SocketIO from "socket.io";
-import http from "http";
 import {UniqueId, IAuthCredentials} from "../shared/account";
-import {Events} from "./network/events";
+import {Events} from "../public-api/events";
 import {SpecialUniqueIds} from "./network/structures";
-import {IVector, IWorldEntity, EntityType} from "../shared/entities";
+import {IWorldVector, IWorldEntity, EntityType} from "../shared/entities";
 import Game from "./core/game";
 import {CenterOriginVector} from "./core/constants";
+import http from "http";
+import fs from "fs";
+import path from "path";
 
-const socket: SocketIO.Server = SocketIO(http.createServer());
+const app = http.createServer(handler);
+const port: number = parseInt(process.env.PORT as string) || 80;
+const socket: SocketIO.Server = SocketIO(app);
+const index: any = fs.readFileSync(path.join(__dirname, "../../", "client", "index.html"));
+const gameFile: any = fs.readFileSync(path.join(__dirname, "../../", "client", "game.js"));
+const styleFile: any = fs.readFileSync(path.join(__dirname, "../../", "client", "style.css"));
+
+function handler(req: any, res: any): void {
+    console.log(`=> ${req.url}`);
+
+    if (req.url === "/core/game.js") {
+        res.writeHead(200);
+        res.end(gameFile);
+
+        return;
+    }
+    else if (req.url === "/style.css") {
+        res.writeHead(200);
+        res.end(styleFile);
+
+        return;
+    }
+
+    res.writeHead(200);
+    res.end(index);
+}
 
 // Data/Local Cache
 const entities: Map<UniqueId, IWorldEntity> = new Map();
@@ -42,7 +69,7 @@ socket.on(Events.Connection, (client) => {
         client.emit(Events.GetActiveWorldZone, 0);
     });
 
-    client.on(Events.MoveEntity, (entityId: UniqueId, position: IVector) => {
+    client.on(Events.MoveEntity, (entityId: UniqueId, position: IWorldVector) => {
         if (!auth) {
             client.emit(Events.NotAuthorized);
 
@@ -97,3 +124,6 @@ socket.on(Events.Connection, (client) => {
         console.log("Client disconnected");
     });
 });
+
+app.listen(port);
+console.log(`Server listening on port ${port}`);

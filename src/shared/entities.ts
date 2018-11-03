@@ -3,6 +3,9 @@ import {UniqueId} from "./account";
 export type IVector = {
     x: number;
     y: number;
+}
+
+export interface IWorldVector extends IVector {
     zone: number;
 }
 
@@ -15,7 +18,7 @@ export type IEntity = {
 }
 
 export interface IWorldEntity extends IEntity {
-    position: IVector;
+    position: IWorldVector;
     type: EntityType;
     owner: UniqueId;
 }

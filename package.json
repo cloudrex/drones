@@ -4,9 +4,10 @@
     "description": "A coding game",
     "main": "index.js",
     "scripts": {
+        "build:client": "webpack --config config/webpack.client.config.js",
+        "build:server": "webpack --config config/webpack.server.config.js",
         "build": "tsc",
-        "start": "npm run build",
-        "serve": "npm run build && node dist/server/server.js"
+        "start": "npm run build && node dist/server/server/server.js"
     },
     "keywords": [
         "coding",
@@ -18,13 +19,23 @@
         "@types/mongodb": "^3.1.14",
         "@types/node": "^10.12.2",
         "@types/socket.io": "^2.1.0",
+        "@types/socket.io-client": "^1.4.32",
         "@types/uuid": "^3.4.4",
         "express": "^4.16.4",
         "mongodb": "^3.1.8",
         "socket.io": "^2.1.1",
+        "socket.io-client": "^2.1.1",
         "uuid": "^3.3.2"
     },
     "devDependencies": {
-        "grunt": "^1.0.3"
+        "css-loader": "^1.0.1",
+        "file-loader": "^2.0.0",
+        "grunt": "^1.0.3",
+        "html-webpack-plugin": "^3.2.0",
+        "style-loader": "^0.23.1",
+        "ts-loader": "^5.3.0",
+        "typescript": "^3.1.6",
+        "webpack": "^4.24.0",
+        "webpack-cli": "^3.1.2"
     }
 }

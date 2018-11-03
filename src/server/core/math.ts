@@ -1,7 +1,7 @@
-import {IVector} from "../../shared/entities";
+import {IWorldVector} from "../../shared/entities";
 
 export default abstract class GameMath {
-    public static calculatePositionZone(position: IVector): number {
+    public static calculatePositionZone(position: IWorldVector): number {
         let newZone: number = position.zone;
 
         if (position.zone === 0 || position.zone === 8) {

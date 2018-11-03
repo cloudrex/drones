@@ -1,12 +1,12 @@
-import {IVector} from "../../shared/entities";
+import {IWorldVector} from "../../shared/entities";
 
-export const OriginVector: Readonly<IVector> = {
+export const OriginVector: Readonly<IWorldVector> = {
     x: 0,
     y: 0,
     zone: 0
 };
 
-export const CenterOriginVector: Readonly<IVector> = {
+export const CenterOriginVector: Readonly<IWorldVector> = {
     x: 50,
     y: 50,
     zone: 0
