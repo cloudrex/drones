@@ -1,0 +1,30 @@
+{
+    "name": "coders-dreamworld",
+    "version": "1.0.0",
+    "description": "A coding game",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "start": "npm run build",
+        "serve": "npm run build && node dist/server/server.js"
+    },
+    "keywords": [
+        "coding",
+        "game"
+    ],
+    "author": "CloudRex <cloudrex@outlook.com>",
+    "license": "MIT",
+    "dependencies": {
+        "@types/mongodb": "^3.1.14",
+        "@types/node": "^10.12.2",
+        "@types/socket.io": "^2.1.0",
+        "@types/uuid": "^3.4.4",
+        "express": "^4.16.4",
+        "mongodb": "^3.1.8",
+        "socket.io": "^2.1.1",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {
+        "grunt": "^1.0.3"
+    }
+}
