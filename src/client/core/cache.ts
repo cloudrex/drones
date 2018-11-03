@@ -9,12 +9,16 @@ export default class GameCache implements IDisposable {
         this.entities = new Map();
     }
 
+    public getEntities(): ReadonlyMap<UniqueId, IWorldEntity> {
+        return this.entities;
+    }
+
     public getEntity(id: UniqueId): IWorldEntity | null {
         return this.entities.get(id) || null;
     }
 
-    public setEntity(id: UniqueId, entity: IWorldEntity): this {
-        this.entities.set(id, entity);
+    public setEntity(entity: IWorldEntity): this {
+        this.entities.set(entity.id, entity);
 
         return this;
     }

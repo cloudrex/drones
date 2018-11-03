@@ -1,4 +1,4 @@
-import {IWorldVector} from "../../shared/entities";
+import {IWorldVector} from "../shared/entities";
 
 export default abstract class GameMath {
     public static calculatePositionZone(position: IWorldVector): number {

@@ -9,16 +9,19 @@ import Drawer from "./drawer";
 import GameCache from "./cache";
 import GameNetwork from "./network";
 
-const gameElm: HTMLCanvasElement | null = document.getElementById("game") as HTMLCanvasElement | null;
+const gameElm: HTMLCanvasElement = document.getElementById("game") as HTMLCanvasElement;
 
-if (gameElm === null) {
+if (!gameElm) {
     throw new Error("Game canvas element not found");
 }
 
 const dimensions: IVector = {
-    x: gameElm.clientWidth,
-    y: gameElm.clientHeight
+    x: 800,
+    y: 600
 };
+
+gameElm.setAttribute("width", `${dimensions.x}px`);
+gameElm.setAttribute("height", `${dimensions.y}px`);
 
 const context: CanvasRenderingContext2D | null = gameElm.getContext("2d");
 
@@ -27,20 +30,38 @@ if (context === null) {
 }
 
 const x: CanvasRenderingContext2D = context;
-const drawer: Drawer = new Drawer(x, dimensions);
 const cache: GameCache = new GameCache();
-const net: GameNetwork = new GameNetwork(cache);
+const drawer: Drawer = new Drawer(x, dimensions, cache);
+const net: GameNetwork = new GameNetwork(cache, dimensions);
 
 function init(): void {
     console.log("Game init");
 
-    net.init();
+    // TODO:
+    net.init().authenticate({
+        username: "john",
+        password: "doe"
+    });
+
+    // Canvas events
+    gameElm.onclick = (e) => {
+        // TODO: Use pos
+        const pos: IVector = {
+            x: e.offsetX,
+            y: e.offsetY
+        };
+
+        net.moveEntity(window.prompt("id") as string, {
+            x: 1,
+            y: 1
+        });
+    };
 
     // Game loop
     setInterval(() => {
         update();
         draw();
-    }, 0);
+    }, 1);
 }
 
 function update(): void {
@@ -49,6 +70,7 @@ function update(): void {
 
 function draw(): void {
     drawer.background();
+    drawer.entities();
 }
 
 function clearScreen(): void {

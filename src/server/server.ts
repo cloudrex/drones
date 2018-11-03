@@ -2,39 +2,22 @@ import SocketIO from "socket.io";
 import {UniqueId, IAuthCredentials} from "../shared/account";
 import {Events} from "../public-api/events";
 import {SpecialUniqueIds} from "./network/structures";
-import {IWorldVector, IWorldEntity, EntityType} from "../shared/entities";
+import {IWorldVector, IWorldEntity, EntityType, IVector} from "../shared/entities";
 import Game from "./core/game";
 import {CenterOriginVector} from "./core/constants";
-import http from "http";
-import fs from "fs";
+import http, {Server} from "http";
 import path from "path";
+import express from "express";
 
-const app = http.createServer(handler);
 const port: number = parseInt(process.env.PORT as string) || 80;
-const socket: SocketIO.Server = SocketIO(app);
-const index: any = fs.readFileSync(path.join(__dirname, "../../", "client", "index.html"));
-const gameFile: any = fs.readFileSync(path.join(__dirname, "../../", "client", "game.js"));
-const styleFile: any = fs.readFileSync(path.join(__dirname, "../../", "client", "style.css"));
+const clientRoot: string = path.join(__dirname, "../../", "client");
 
-function handler(req: any, res: any): void {
-    console.log(`=> ${req.url}`);
+const app: express.Express = express();
+const server: Server = http.createServer(app);
+const socket: SocketIO.Server = SocketIO(server);
 
-    if (req.url === "/core/game.js") {
-        res.writeHead(200);
-        res.end(gameFile);
-
-        return;
-    }
-    else if (req.url === "/style.css") {
-        res.writeHead(200);
-        res.end(styleFile);
-
-        return;
-    }
-
-    res.writeHead(200);
-    res.end(index);
-}
+// Routes
+app.use(express.static(clientRoot));
 
 // Data/Local Cache
 const entities: Map<UniqueId, IWorldEntity> = new Map();
@@ -53,9 +36,25 @@ socket.on(Events.Connection, (client) => {
         
         auth = SpecialUniqueIds.Admin;
         client.emit(Events.Authenticate, auth);
+        client.emit(Events.Reset);
 
         // Create initial drone
-        socket.emit(Events.SpawnEntity, Game.createEntity(EntityType.Drone, auth, CenterOriginVector))
+        registerEntity(Game.createEntity(EntityType.Drone, auth, CenterOriginVector));
+    });
+
+    client.on(Events.SpawnEntity, (type: EntityType, position: IWorldVector) => {
+        if (!auth) {
+            client.emit(Events.NotAuthorized);
+
+            return;
+        }
+        else if (!Object.values(EntityType).includes(type)) {
+            client.emit(Events.BadRequest);
+
+            return;
+        }
+
+        registerEntity(Game.createEntity(type, auth, position));
     });
 
     client.on(Events.GetActiveWorldZone, () => {
@@ -69,7 +68,7 @@ socket.on(Events.Connection, (client) => {
         client.emit(Events.GetActiveWorldZone, 0);
     });
 
-    client.on(Events.MoveEntity, (entityId: UniqueId, position: IWorldVector) => {
+    client.on(Events.MoveEntity, (entityId: UniqueId, position: IVector) => {
         if (!auth) {
             client.emit(Events.NotAuthorized);
 
@@ -125,5 +124,10 @@ socket.on(Events.Connection, (client) => {
     });
 });
 
-app.listen(port);
+function registerEntity(entity: IWorldEntity): void {
+    entities.set(entity.id, entity);
+    socket.emit(Events.SpawnEntity, entity);
+}
+
+server.listen(port);
 console.log(`Server listening on port ${port}`);

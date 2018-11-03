@@ -5,6 +5,7 @@ export enum Events {
 
     // General
     BadRequest = "bad-request",
+    Reset = "reset",
 
     // Account
     Authenticate = "authenticate",

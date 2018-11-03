@@ -10,7 +10,7 @@ export interface IWorldVector extends IVector {
 }
 
 export enum EntityType {
-    Drone
+    Drone = "drone"
 }
 
 export type IEntity = {
