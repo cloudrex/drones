@@ -10,7 +10,9 @@ export interface IWorldVector extends IVector {
 }
 
 export enum EntityType {
-    Drone = "drone"
+    Drone = "drone",
+    Stone = "stone",
+    Grass = "grass"
 }
 
 export type IEntity = {
@@ -19,6 +21,7 @@ export type IEntity = {
 
 export interface IWorldEntity extends IEntity {
     position: IWorldVector;
+    velocity: IVector;
     type: EntityType;
     owner: UniqueId;
 }

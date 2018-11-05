@@ -31,8 +31,14 @@ if (context === null) {
 
 const x: CanvasRenderingContext2D = context;
 const cache: GameCache = new GameCache();
+
+// Expose cache for debugging
+(global as any).cache = cache;
+
 const drawer: Drawer = new Drawer(x, dimensions, cache);
 const net: GameNetwork = new GameNetwork(cache, dimensions);
+
+let deltaTime: number = Date.now();
 
 function init(): void {
     console.log("Game init");
@@ -57,24 +63,23 @@ function init(): void {
         });
     };
 
-    // Game loop
-    setInterval(() => {
-        update();
-        draw();
-    }, 1);
+    window.requestAnimationFrame(update);
 }
 
 function update(): void {
-    clearScreen();
+    // Set delta time
+    deltaTime = Date.now() - deltaTime;
+
+    // Re-draw
+    draw(deltaTime);
+
+    // Repeat
+    window.requestAnimationFrame(update);
 }
 
-function draw(): void {
+function draw(deltaTime: number): void {
     drawer.background();
-    drawer.entities();
-}
-
-function clearScreen(): void {
-    x.clearRect(0, 0, dimensions.x, dimensions.y);
+    drawer.entities(deltaTime);
 }
 
 init();

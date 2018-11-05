@@ -7,6 +7,12 @@ export default abstract class Game {
         return {
             owner,
             type,
+
+            velocity: {
+                x: 0,
+                y: 0
+            },
+            
             position,
             id: v1()
         };

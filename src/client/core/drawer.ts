@@ -1,7 +1,7 @@
 import {IVector} from "../../shared/entities";
 import GameCache from "./cache";
 import Utils from "./utils";
-import {IEntityModel, EntitySize} from "../../public-api/entities";
+import {IEntityModel, BlockSize} from "../../public-api/entities";
 
 export default class Drawer {
     private readonly x: CanvasRenderingContext2D;
@@ -14,12 +14,27 @@ export default class Drawer {
         this.cache = cache;
     }
 
-    public entities(): this {
+    public entities(deltaTime: number): this {
         for (let [id, entity] of this.cache.getEntities()) {
             const model: IEntityModel = Utils.getEntityModel(entity.type);
 
             this.x.fillStyle = model.color;
-            this.x.fillRect(entity.position.x, entity.position.y, EntitySize, EntitySize);
+
+            if (!model.round) {
+                this.x.fillRect(entity.position.x, entity.position.y, BlockSize, BlockSize);
+            }
+            else {
+                this.x.beginPath();
+
+                this.x.arc(
+                    entity.position.x + (entity.velocity.x * deltaTime),
+                    entity.position.y + (entity.velocity.y * deltaTime),
+                    BlockSize / 2, 0, 2 * Math.PI
+                );
+                
+                this.x.fill();
+                this.x.closePath();
+            }
         }
 
         return this;
