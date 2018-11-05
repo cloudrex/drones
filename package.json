@@ -1,7 +1,7 @@
 {
-    "name": "coders-dreamworld",
+    "name": "automata",
     "version": "1.0.0",
-    "description": "A coding game",
+    "description": "A multiplayer programming game",
     "main": "index.js",
     "scripts": {
         "build:client": "webpack --config config/webpack.client.config.js",

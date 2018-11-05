@@ -5,9 +5,3 @@ export const OriginVector: Readonly<IWorldVector> = {
     y: 0,
     zone: 0
 };
-
-export const CenterOriginVector: Readonly<IWorldVector> = {
-    x: 50,
-    y: 50,
-    zone: 0
-};

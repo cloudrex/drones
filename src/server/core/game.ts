@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {IWorldEntity, EntityType, IWorldVector} from "../../public-api/entities";
-import {UniqueId} from "./account";
+import {UniqueId} from "../../public-api/account";
 
 export type IEntityProperties = {
     readonly drone: Partial<IWorldEntity>;

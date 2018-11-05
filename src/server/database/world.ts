@@ -1,4 +1,4 @@
-import {IWorldEntity} from "../../shared/entities";
+import {IWorldEntity} from "../../public-api/entities";
 import Db from "./database";
 
 export default abstract class DbWorld {

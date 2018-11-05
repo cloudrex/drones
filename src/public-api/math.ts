@@ -1,4 +1,4 @@
-import {IWorldVector, IVector} from "../shared/entities";
+import {IWorldVector, IVector} from "../public-api/entities";
 import {BlockSize} from "./entities";
 
 export default abstract class GameMath {
@@ -65,6 +65,13 @@ export default abstract class GameMath {
         return {
             x,
             y
+        };
+    }
+
+    public static calculateBlockAtPosition(position: IVector): IVector {
+        return {
+           x: Math.round((position.x - (BlockSize / 2)) / BlockSize),
+           y: Math.round((position.y - (BlockSize / 2)) / BlockSize)
         };
     }
 }

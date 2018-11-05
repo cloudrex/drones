@@ -1,4 +1,4 @@
-import {EntityType, IVector} from "../../shared/entities";
+import {EntityType, IVector} from "../../public-api/entities";
 import {IEntityModel, DefaultEntityModels} from "../../public-api/entities";
 
 export default abstract class Utils {

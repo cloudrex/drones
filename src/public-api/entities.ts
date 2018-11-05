@@ -1,4 +1,4 @@
-import {UniqueId} from "../server/core/account";
+import {UniqueId} from "./account";
 
 export type IEntityModel = {
     readonly color: string;

@@ -4,7 +4,7 @@ require("file-loader?name=[name].[ext]!../index.html");
 // Copy style.css to output
 require("file-loader?name=[name].[ext]!../style.css");
 
-import {IVector} from "../../shared/entities";
+import {IVector} from "../../public-api/entities";
 import Drawer from "./drawer";
 import GameCache from "./cache";
 import GameNetwork from "./network";

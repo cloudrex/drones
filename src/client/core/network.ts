@@ -1,7 +1,7 @@
 import GameCache from "./cache";
-import {IAuthCredentials, UniqueId} from "../../shared/account";
+import {IAuthCredentials, UniqueId} from "../../public-api/account";
 import {Events} from "../../public-api/events";
-import {IWorldEntity, EntityType, IVector} from "../../shared/entities";
+import {IWorldEntity, EntityType, IVector} from "../../public-api/entities";
 import Utils from "./utils";
 import GameMath from "../../public-api/math";
 

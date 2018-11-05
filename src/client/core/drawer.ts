@@ -1,4 +1,5 @@
-import {IVector} from "../../shared/entities";
+import {IVector} from "../../public-api/entities";
+import GameMath from "../../public-api/math";
 import GameCache from "./cache";
 import Utils from "./utils";
 import {IEntityModel, BlockSize} from "../../public-api/entities";
@@ -26,9 +27,11 @@ export default class Drawer {
             else {
                 this.x.beginPath();
 
+                const pos: IVector = GameMath.calculateBlockAtPosition(entity.position);
+
                 this.x.arc(
-                    entity.position.x,
-                    entity.position.y,
+                    pos.x + BlockSize / 2,
+                    pos.y + BlockSize / 2,
                     BlockSize / 2, 0, 2 * Math.PI
                 );
                 
@@ -44,9 +47,11 @@ export default class Drawer {
     public selection(relativeDimensions: IVector, lastMousePosition: IVector): this {
         this.x.fillStyle = "rgba(255, 255, 255, 0.5)";
 
+        const blockPosition: IVector = GameMath.calculateBlockAtPosition(lastMousePosition);
+
         this.x.fillRect(
-            lastMousePosition.x - (BlockSize / 2),
-            lastMousePosition.y - (BlockSize / 2),
+            blockPosition.x * BlockSize,
+            blockPosition.y * BlockSize,
             BlockSize,
             BlockSize
         );

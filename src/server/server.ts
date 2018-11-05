@@ -1,13 +1,13 @@
 import SocketIO from "socket.io";
-import {UniqueId, IAuthCredentials} from "./core/account";
+import {UniqueId, IAuthCredentials} from "../public-api/account";
 import {Events} from "../public-api/events";
 import {SpecialUniqueIds} from "./network/structures";
 import {IWorldVector, IWorldEntity, EntityType, IVector} from "../public-api/entities";
 import Game from "./core/game";
-import {CenterOriginVector} from "./core/constants";
 import http, {Server} from "http";
 import path from "path";
 import express from "express";
+import { OriginVector } from "./core/constants";
 
 const port: number = parseInt(process.env.PORT as string) || 80;
 const clientRoot: string = path.join(__dirname, "../../", "client");
@@ -39,7 +39,7 @@ socket.on(Events.Connection, (client) => {
         client.emit(Events.Reset);
 
         // Create initial drone
-        registerEntity(Game.createEntity(EntityType.Drone, auth, CenterOriginVector));
+        registerEntity(Game.createEntity(EntityType.Drone, auth, OriginVector));
     });
 
     client.on(Events.SpawnEntity, (type: EntityType, position: IWorldVector) => {

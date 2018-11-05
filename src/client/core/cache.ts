@@ -1,6 +1,6 @@
-import {UniqueId} from "../../shared/account";
-import {IWorldEntity, IWorldTerrain} from "../../shared/entities";
-import {IDisposable} from "../../shared/helpers";
+import {UniqueId} from "../../public-api/account";
+import {IWorldEntity, IWorldTerrain} from "../../public-api/entities";
+import {IDisposable} from "../../public-api/helpers";
 
 export default class GameCache implements IDisposable {
     private readonly entities: Map<UniqueId, IWorldEntity>;
