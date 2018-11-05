@@ -1,8 +1,6 @@
 import {TerrainType, IWorldTerrain, IVector} from "../../public-api/entities";
 import GameMath from "../../public-api/math";
-import {v1} from "uuid";
 import Game from "../core/game";
-import Utils from "../../public-api/utils";
 
 export type ITerrainLayer = {
     readonly start: IVector;

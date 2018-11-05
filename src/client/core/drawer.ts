@@ -3,7 +3,6 @@ import GameMath from "../../public-api/math";
 import GameCache from "./cache";
 import Utils from "../../public-api/utils";
 import {IEntityModel, BlockSize} from "../../public-api/entities";
-import Assets from "./assets";
 
 export default class Drawer {
     private readonly x: CanvasRenderingContext2D;

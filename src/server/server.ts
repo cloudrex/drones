@@ -8,7 +8,6 @@ import http, {Server} from "http";
 import path from "path";
 import express from "express";
 import {OriginVector} from "./core/constants";
-import TerrainGenerator from "./terrain-generator/terrain-generator";
 
 const port: number = parseInt(process.env.PORT as string) || 80;
 const clientRoot: string = path.join(__dirname, "../../", "client");
