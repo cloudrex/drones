@@ -5,11 +5,18 @@ export type IEntityModel = {
     readonly round?: boolean;
 }
 
+export type ITerrainModel = {
+    readonly texture: string;
+};
+
 export type IEntityModels = {
     readonly drone: IEntityModel;
-    readonly stone: IEntityModel;
-    readonly grass: IEntityModel;
 }
+
+export type ITerrainModels = {
+    readonly stone: ITerrainModel;
+    readonly grass: ITerrainModel;
+};
 
 export enum EntityType {
     Drone = "drone"
@@ -24,14 +31,16 @@ export const DefaultEntityModels: IEntityModels = {
     [EntityType.Drone]: {
         color: "#fff",
         round: true
+    }
+};
+
+export const DefaultTerrainModels: ITerrainModels = {
+    stone: {
+        texture: "terrain/stone",
     },
 
-    [TerrainType.Stone]: {
-        color: "#333"
-    },
-
-    [TerrainType.Grass]: {
-        color: "#336600"
+    grass: {
+        texture: "terrain/grass"
     }
 };
 

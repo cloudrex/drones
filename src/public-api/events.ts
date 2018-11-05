@@ -18,5 +18,9 @@ export enum Events {
     // Game -> Entities
     MoveEntity = "move-entity",
     StopEntity = "stop-entity",
-    SpawnEntity = "spawn-entity"
+    SpawnEntity = "spawn-entity",
+
+    // Game -> Terrain
+    SpawnTerrain = "spawn-terrain",
+    FillTerrain = "fill-terrain"
 }

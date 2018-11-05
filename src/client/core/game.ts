@@ -48,7 +48,7 @@ let lastMousePos: IVector = {
 
 let previousDeltaTime: number = 0;
 
-function init(): void {
+async function init(): Promise<void> {
     console.log("Game init");
 
     // TODO:
@@ -78,6 +78,7 @@ function init(): void {
         };
     };
 
+    await cache.loadAssets();
     window.requestAnimationFrame(update);
 }
 
@@ -114,9 +115,10 @@ function update(timestamp: number): void {
 }
 
 function draw(): void {
-    drawer.background();
-    drawer.entities();
-    drawer.selection(relativeDimensions, lastMousePos);
+    drawer.background()
+        .terrain()
+        .entities()
+        .selection(relativeDimensions, lastMousePos);
 }
 
 init();

@@ -74,4 +74,8 @@ export default abstract class GameMath {
            y: Math.round((position.y - (BlockSize / 2)) / BlockSize)
         };
     }
+
+    public static calculateTotalBlocks(start: IVector, end: IVector): number {
+        return (start.x + end.x) * (start.y + end.y);
+    }
 }

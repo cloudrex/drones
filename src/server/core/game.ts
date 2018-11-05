@@ -1,20 +1,38 @@
 import {v1} from "uuid";
-import {IWorldEntity, EntityType, IWorldVector} from "../../public-api/entities";
+import {IWorldEntity, EntityType, IWorldVector, TerrainType, IWorldTerrain} from "../../public-api/entities";
 import {UniqueId} from "../../public-api/account";
 
-export type IEntityProperties = {
+export type ITerrainProperties = {
+    speedChange?: number;
+    texture: string;
+    walkable?: boolean;
+};
+
+export type IEntityPropertyGroup = {
     readonly drone: Partial<IWorldEntity>;
 }
 
-export const DefaultEntityProperties: IEntityProperties = {
-    drone: {
+export type ITerrainPropertyGroup = {
+    readonly stone: ITerrainProperties;
+}
+
+export const DefaultEntityProperties: IEntityPropertyGroup = {
+    [EntityType.Drone]: {
         speed: 0.1
+    }
+};
+
+export const DefaultTerrainProperties: ITerrainPropertyGroup = {
+    [TerrainType.Stone]: {
+        texture: "terrain/stone"
     }
 };
 
 export default abstract class Game {
     public static createEntity(type: EntityType, owner: UniqueId, position: IWorldVector): IWorldEntity {
+        // TODO: Verify that default for this type isn't undefined
         return {
+            ...(DefaultEntityProperties as any)[type],
             owner,
             type,
 
@@ -23,8 +41,16 @@ export default abstract class Game {
                 y: 0
             },
             
-            // TODO
-            speed: 0.1,
+            position,
+            id: v1()
+        };
+    }
+
+    public static createTerrain(type: TerrainType, position: IWorldVector): IWorldTerrain {
+        // TODO: Verify that default for this type isn't undefined
+        return {
+            ...(DefaultTerrainProperties as any)[type],
+            type,
             position,
             id: v1()
         };

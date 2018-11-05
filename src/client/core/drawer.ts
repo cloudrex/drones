@@ -1,8 +1,9 @@
-import {IVector} from "../../public-api/entities";
+import {IVector, ITerrainModel} from "../../public-api/entities";
 import GameMath from "../../public-api/math";
 import GameCache from "./cache";
-import Utils from "./utils";
+import Utils from "../../public-api/utils";
 import {IEntityModel, BlockSize} from "../../public-api/entities";
+import Assets from "./assets";
 
 export default class Drawer {
     private readonly x: CanvasRenderingContext2D;
@@ -38,6 +39,27 @@ export default class Drawer {
                 this.x.fill();
                 this.x.closePath();
             }
+        }
+
+        return this;
+    }
+
+    public terrain(): this {
+        // TODO: Cache images (if using the same texture over and over again)
+        for (let [id, terrain] of this.cache.getTerrains()) {
+            const model: ITerrainModel = Utils.getTerrainModel(terrain.type);
+
+            if (!this.cache.hasTexture(model.texture)) {
+                throw new Error(`[Drawer.terrain] No texture cached for terrain entity '${terrain.type}'`);
+            }
+
+            this.x.drawImage(
+                this.cache.getTexture(model.texture) as HTMLImageElement,
+                terrain.position.x,
+                terrain.position.y,
+                BlockSize,
+                BlockSize
+            );
         }
 
         return this;

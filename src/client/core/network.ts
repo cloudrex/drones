@@ -1,8 +1,8 @@
 import GameCache from "./cache";
 import {IAuthCredentials, UniqueId} from "../../public-api/account";
 import {Events} from "../../public-api/events";
-import {IWorldEntity, EntityType, IVector} from "../../public-api/entities";
-import Utils from "./utils";
+import {IWorldEntity, EntityType, IVector, IWorldTerrain} from "../../public-api/entities";
+import Utils from "../../public-api/utils";
 import GameMath from "../../public-api/math";
 
 export default class GameNetwork {
@@ -30,6 +30,7 @@ export default class GameNetwork {
         this.socket.on(Events.SpawnEntity, (entity: IWorldEntity) => {
             console.log(`Added entity @ ${entity.id}`);
 
+            // TODO: Consider creating method to do this
             this.cache.setEntity({
                 ...entity,
 
@@ -53,6 +54,20 @@ export default class GameNetwork {
                 ...Utils.calculateAbsPosition(entity.position, this.dimensions),
                 zone: GameMath.calculatePositionZone(entity.position)
             };
+        });
+
+        this.socket.on(Events.SpawnTerrain, (terrain: IWorldTerrain) => {
+            console.log(`Added terrain @ ${terrain.id}`);
+
+            // TODO: Consider creating method to do this
+            this.cache.setTerrain({
+                ...terrain,
+
+                position: {
+                    ...terrain.position,
+                    ...Utils.calculateAbsPosition(terrain.position, this.dimensions)
+                }
+            });
         });
 
         this.socket.on(Events.BadRequest, () => {
