@@ -1,12 +1,14 @@
 import {UniqueId} from "../../shared/account";
-import {IWorldEntity} from "../../shared/entities";
+import {IWorldEntity, IWorldTerrain} from "../../shared/entities";
 import {IDisposable} from "../../shared/helpers";
 
 export default class GameCache implements IDisposable {
     private readonly entities: Map<UniqueId, IWorldEntity>;
+    private readonly terrain: Map<UniqueId, IWorldTerrain>;
 
     public constructor() {
         this.entities = new Map();
+        this.terrain = new Map();
     }
 
     public getEntities(): ReadonlyMap<UniqueId, IWorldEntity> {

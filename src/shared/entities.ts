@@ -10,7 +10,10 @@ export interface IWorldVector extends IVector {
 }
 
 export enum EntityType {
-    Drone = "drone",
+    Drone = "drone"
+}
+
+export enum TerrainType {
     Stone = "stone",
     Grass = "grass"
 }
@@ -26,4 +29,12 @@ export interface IWorldEntity extends IEntity {
     owner: UniqueId;
     targetPosition?: IVector;
     speed: number;
+}
+
+export interface IWorldTerrain extends IEntity {
+    position: IWorldVector;
+    texture: string;
+    type: TerrainType;
+    walkable?: boolean;
+    speedChange?: number;
 }
