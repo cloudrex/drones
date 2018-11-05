@@ -40,6 +40,20 @@ export default class Drawer {
         return this;
     }
 
+    // TODO: Draw selection by block
+    public selection(relativeDimensions: IVector, lastMousePosition: IVector): this {
+        this.x.fillStyle = "rgba(255, 255, 255, 0.5)";
+
+        this.x.fillRect(
+            lastMousePosition.x - (BlockSize / 2),
+            lastMousePosition.y - (BlockSize / 2),
+            BlockSize,
+            BlockSize
+        );
+
+        return this;
+    }
+
     public background(): this {
         this.x.fillStyle = "#000";
         this.x.fillRect(0, 0, this.dimensions.x, this.dimensions.y);

@@ -8,6 +8,7 @@ import {IVector} from "../../shared/entities";
 import Drawer from "./drawer";
 import GameCache from "./cache";
 import GameNetwork from "./network";
+import GameMath from "../../public-api/math";
 
 const gameElm: HTMLCanvasElement = document.getElementById("game") as HTMLCanvasElement;
 
@@ -19,6 +20,8 @@ const dimensions: IVector = {
     x: 800,
     y: 600
 };
+
+const relativeDimensions: IVector = GameMath.calculateRelativeSize(dimensions);
 
 gameElm.setAttribute("width", `${dimensions.x}px`);
 gameElm.setAttribute("height", `${dimensions.y}px`);
@@ -37,6 +40,11 @@ const cache: GameCache = new GameCache();
 
 const drawer: Drawer = new Drawer(x, dimensions, cache);
 const net: GameNetwork = new GameNetwork(cache, dimensions);
+
+let lastMousePos: IVector = {
+    x: 0,
+    y: 0
+};
 
 let previousDeltaTime: number | null = null;
 
@@ -63,6 +71,13 @@ function init(): void {
         });
     };
 
+    gameElm.onmousemove = (e) => {
+        lastMousePos = {
+            x: e.offsetX,
+            y: e.offsetY
+        };
+    };
+
     window.requestAnimationFrame(update);
 }
 
@@ -82,6 +97,7 @@ function update(timestamp: number): void {
 
 function draw(deltaTime: number): void {
     drawer.background();
+    drawer.selection(relativeDimensions, lastMousePos);
     drawer.entities(deltaTime);
 }
 

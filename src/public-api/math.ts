@@ -1,4 +1,5 @@
-import {IWorldVector} from "../shared/entities";
+import {IWorldVector, IVector} from "../shared/entities";
+import {BlockSize} from "./entities";
 
 export default abstract class GameMath {
     public static calculatePositionZone(position: IWorldVector): number {
@@ -34,5 +35,12 @@ export default abstract class GameMath {
         }
 
         return newZone;
+    }
+
+    public static calculateRelativeSize(dimensions: IVector): IVector {
+        return {
+            x: Math.round(dimensions.x / BlockSize),
+            y: Math.round(dimensions.y / BlockSize)
+        };
     }
 }
