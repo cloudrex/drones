@@ -14,7 +14,7 @@ export default class Drawer {
         this.cache = cache;
     }
 
-    public entities(deltaTime: number): this {
+    public entities(): this {
         for (let [id, entity] of this.cache.getEntities()) {
             const model: IEntityModel = Utils.getEntityModel(entity.type);
 
@@ -27,8 +27,8 @@ export default class Drawer {
                 this.x.beginPath();
 
                 this.x.arc(
-                    entity.position.x + (entity.velocity.x * deltaTime),
-                    entity.position.y + (entity.velocity.y * deltaTime),
+                    entity.position.x,
+                    entity.position.y,
                     BlockSize / 2, 0, 2 * Math.PI
                 );
                 

@@ -43,4 +43,28 @@ export default abstract class GameMath {
             y: Math.round(dimensions.y / BlockSize)
         };
     }
+
+    public static getVelocityTowards(position: IVector, destination: IVector) {
+        let x: number = 0;
+        let y: number = 0;
+
+        if (destination.x > position.x) {
+            x = 1;
+        }
+        else if (destination.x < position.x) {
+            x = -1;
+        }
+
+        if (destination.y > position.y) {
+            y = 1;
+        }
+        else if (destination.y < position.y) {
+            y = -1;
+        }
+
+        return {
+            x,
+            y
+        };
+    }
 }

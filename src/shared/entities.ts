@@ -24,4 +24,6 @@ export interface IWorldEntity extends IEntity {
     velocity: IVector;
     type: EntityType;
     owner: UniqueId;
+    targetPosition?: IVector;
+    speed: number;
 }

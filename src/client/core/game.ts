@@ -46,7 +46,7 @@ let lastMousePos: IVector = {
     y: 0
 };
 
-let previousDeltaTime: number | null = null;
+let previousDeltaTime: number = 0;
 
 function init(): void {
     console.log("Game init");
@@ -82,23 +82,40 @@ function init(): void {
 }
 
 function update(timestamp: number): void {
-    if (previousDeltaTime === null) {
-        previousDeltaTime = timestamp;
+    let deltaTime: number = timestamp - previousDeltaTime;
+
+    // Target positions
+    for (let [id, entity] of cache.getEntities()) {
+        if (entity.targetPosition !== undefined) {
+            const velocityTowards: IVector = GameMath.getVelocityTowards(entity.position, entity.targetPosition);
+
+            entity.velocity = {
+                x: velocityTowards.x * entity.speed,
+                y: velocityTowards.y * entity.speed
+            };
+        }
+
+        entity.position = {
+            x: entity.position.x + (entity.velocity.x * deltaTime),
+            y: entity.position.y + (entity.velocity.y * deltaTime),
+            zone: entity.position.zone
+        };
     }
 
-    const deltaTime: number = timestamp - previousDeltaTime;
-
     // Re-draw
-    draw(deltaTime);
+    draw();
+
+    // Save new timestamp
+    previousDeltaTime = timestamp;
 
     // Repeat
     window.requestAnimationFrame(update);
 }
 
-function draw(deltaTime: number): void {
+function draw(): void {
     drawer.background();
+    drawer.entities();
     drawer.selection(relativeDimensions, lastMousePos);
-    drawer.entities(deltaTime);
 }
 
 init();
