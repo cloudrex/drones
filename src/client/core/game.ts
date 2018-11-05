@@ -38,7 +38,7 @@ const cache: GameCache = new GameCache();
 const drawer: Drawer = new Drawer(x, dimensions, cache);
 const net: GameNetwork = new GameNetwork(cache, dimensions);
 
-let deltaTime: number = Date.now();
+let previousDeltaTime: number | null = null;
 
 function init(): void {
     console.log("Game init");
@@ -66,9 +66,12 @@ function init(): void {
     window.requestAnimationFrame(update);
 }
 
-function update(): void {
-    // Set delta time
-    deltaTime = Date.now() - deltaTime;
+function update(timestamp: number): void {
+    if (previousDeltaTime === null) {
+        previousDeltaTime = timestamp;
+    }
+
+    const deltaTime: number = timestamp - previousDeltaTime;
 
     // Re-draw
     draw(deltaTime);
