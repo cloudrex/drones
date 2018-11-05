@@ -1,8 +1,8 @@
 import SocketIO from "socket.io";
-import {UniqueId, IAuthCredentials} from "../shared/account";
+import {UniqueId, IAuthCredentials} from "./core/account";
 import {Events} from "../public-api/events";
 import {SpecialUniqueIds} from "./network/structures";
-import {IWorldVector, IWorldEntity, EntityType, IVector} from "../shared/entities";
+import {IWorldVector, IWorldEntity, EntityType, IVector} from "../public-api/entities";
 import Game from "./core/game";
 import {CenterOriginVector} from "./core/constants";
 import http, {Server} from "http";

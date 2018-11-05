@@ -1,13 +1,13 @@
 import {v1} from "uuid";
-import {IWorldEntity, EntityType, IWorldVector} from "../../shared/entities";
-import {UniqueId} from "../../shared/account";
+import {IWorldEntity, EntityType, IWorldVector} from "../../public-api/entities";
+import {UniqueId} from "./account";
 
 export type IEntityProperties = {
-    readonly [EntityType.Drone]: Partial<IWorldEntity>;
+    readonly drone: Partial<IWorldEntity>;
 }
 
 export const DefaultEntityProperties: IEntityProperties = {
-    [EntityType.Drone]: {
+    drone: {
         speed: 0.1
     }
 };
