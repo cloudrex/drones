@@ -95,6 +95,7 @@ function update(timestamp: number): void {
             };
         }
 
+        // Update entity position
         entity.position = {
             x: entity.position.x + (entity.velocity.x * deltaTime),
             y: entity.position.y + (entity.velocity.y * deltaTime),

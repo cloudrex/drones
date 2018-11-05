@@ -8,7 +8,7 @@ export type IEntityProperties = {
 
 export const DefaultEntityProperties: IEntityProperties = {
     [EntityType.Drone]: {
-        speed: 0.5
+        speed: 0.1
     }
 };
 
@@ -24,7 +24,7 @@ export default abstract class Game {
             },
             
             // TODO
-            speed: 0.5,
+            speed: 0.1,
             position,
             id: v1()
         };
