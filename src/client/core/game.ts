@@ -1,3 +1,6 @@
+// Copy assets to output
+import "../assets/terrain/stone.png";
+
 // Copy index.html to output
 require("file-loader?name=[name].[ext]!../index.html");
 
