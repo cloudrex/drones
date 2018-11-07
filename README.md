@@ -16,14 +16,15 @@ Nerd alert! Below is the initial protocol that all connections follow.
 
 Legend:
 
-C>S => Client to server
-S>C => Server to client
+*C>S* => Client to server
+
+*S>C* => Server to client
 
 **1. Establishing connection**
 
-1. C>S SocketIO connect
-2. C>S Authentication
-3. S>C Authentication response
-4. S>C Spawn initial drone
-5. C>S Request initial zone map
-6. S>C Initial zone map
+1. *C>S* SocketIO connect
+2. *C>S* Authentication
+3. *S>C* Authentication response
+4. *S>C* Spawn initial drone
+5. *C>S* Request initial zone map
+6. *S>C* Initial zone map
