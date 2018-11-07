@@ -12,7 +12,7 @@ This is the expected gameplay of the game once playable:
 
 ## Connection protocol
 
-Nerd alert! Below is the initial protocol that all connections follow.
+Nerd alert! Below is the protocol that all connections and interactions follow.
 
 Legend:
 
