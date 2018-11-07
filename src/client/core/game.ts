@@ -96,7 +96,7 @@ export default class GameClient {
         };
     
         await this.cache.loadAssets();
-        window.requestAnimationFrame(this.update);
+        window.requestAnimationFrame(this.update.bind(this));
     }
     
     public update(timestamp: number): void {
@@ -128,7 +128,7 @@ export default class GameClient {
         this.previousDeltaTime = timestamp;
     
         // Repeat
-        window.requestAnimationFrame(this.update);
+        window.requestAnimationFrame(this.update.bind(this));
     }
     
     public draw(): void {
