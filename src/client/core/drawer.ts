@@ -1,42 +1,38 @@
-import {IVector, ITerrainModel} from "../../public-api/entities";
+import {IVector, ITerrainModel, IWorldTerrain} from "../../public-api/entities";
 import GameMath from "../../public-api/math";
-import GameCache from "./cache";
 import Utils from "../../public-api/utils";
 import {IEntityModel, BlockSize} from "../../public-api/entities";
+import GameClient from "./game";
 
 export default class Drawer {
-    private readonly x: CanvasRenderingContext2D;
-    private readonly dimensions: IVector;
-    private readonly cache: GameCache;
+    private readonly game: GameClient;
 
-    public constructor(x: CanvasRenderingContext2D, dimensions: IVector, cache: GameCache) {
-        this.x = x;
-        this.dimensions = dimensions;
-        this.cache = cache;
+    public constructor(game: GameClient) {
+        this.game = game;
     }
 
     public entities(): this {
-        for (let [id, entity] of this.cache.getEntities()) {
+        for (let [id, entity] of this.game.cache.getEntities()) {
             const model: IEntityModel = Utils.getEntityModel(entity.type);
 
-            this.x.fillStyle = model.color;
+            this.game.x.fillStyle = model.color;
 
             if (!model.round) {
-                this.x.fillRect(entity.position.x, entity.position.y, BlockSize, BlockSize);
+                this.game.x.fillRect(entity.position.x, entity.position.y, BlockSize, BlockSize);
             }
             else {
-                this.x.beginPath();
+                this.game.x.beginPath();
 
                 const pos: IVector = GameMath.calculateBlockAtPosition(entity.position);
 
-                this.x.arc(
+                this.game.x.arc(
                     pos.x + BlockSize / 2,
                     pos.y + BlockSize / 2,
                     BlockSize / 2, 0, 2 * Math.PI
                 );
                 
-                this.x.fill();
-                this.x.closePath();
+                this.game.x.fill();
+                this.game.x.closePath();
             }
         }
 
@@ -44,18 +40,20 @@ export default class Drawer {
     }
 
     public terrain(): this {
+        const zone: IWorldTerrain[] = this.game.cache.getZone(this.game.getActiveZone());
+        
         // TODO: Cache images (if using the same texture over and over again)
-        for (let [id, terrain] of this.cache.getTerrains()) {
-            const model: ITerrainModel = Utils.getTerrainModel(terrain.type);
+        for (let i: number = 0; i < zone.length; i++) {
+            const model: ITerrainModel = Utils.getTerrainModel(zone[i].type);
 
-            if (!this.cache.hasTexture(model.texture)) {
-                throw new Error(`[Drawer.terrain] No texture cached for terrain entity '${terrain.type}'`);
+            if (!this.game.cache.hasTexture(model.texture)) {
+                throw new Error(`[Drawer.terrain] No texture cached for terrain entity '${zone[i].type}'`);
             }
 
-            this.x.drawImage(
-                this.cache.getTexture(model.texture) as HTMLImageElement,
-                terrain.position.x,
-                terrain.position.y,
+            this.game.x.drawImage(
+                this.game.cache.getTexture(model.texture) as HTMLImageElement,
+                zone[i].position.x,
+                zone[i].position.y,
                 BlockSize,
                 BlockSize
             );
@@ -66,11 +64,11 @@ export default class Drawer {
 
     // TODO: Draw selection by block
     public selection(relativeDimensions: IVector, lastMousePosition: IVector): this {
-        this.x.fillStyle = "rgba(255, 255, 255, 0.5)";
+        this.game.x.fillStyle = "rgba(255, 255, 255, 0.5)";
 
         const blockPosition: IVector = GameMath.calculateBlockAtPosition(lastMousePosition);
 
-        this.x.fillRect(
+        this.game.x.fillRect(
             blockPosition.x * BlockSize,
             blockPosition.y * BlockSize,
             BlockSize,
@@ -81,8 +79,8 @@ export default class Drawer {
     }
 
     public background(): this {
-        this.x.fillStyle = "#000";
-        this.x.fillRect(0, 0, this.dimensions.x, this.dimensions.y);
+        this.game.x.fillStyle = "#000";
+        this.game.x.fillRect(0, 0, this.game.dimensions.x, this.game.dimensions.y);
 
         return this;
     }
