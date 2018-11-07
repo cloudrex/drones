@@ -9,13 +9,13 @@ const textures: string[] = [
 
 export default class GameCache implements IDisposable {
     private readonly entities: Map<UniqueId, IWorldEntity>;
-    private readonly terrain: Map<UniqueId, IWorldTerrain>;
     private readonly textures: Map<string, HTMLImageElement>;
+    private readonly zones: Map<number, IWorldTerrain[]>;
 
     public constructor() {
         this.entities = new Map();
-        this.terrain = new Map();
         this.textures = new Map();
+        this.zones = new Map();
     }
 
     public async loadAssets(): Promise<this> {
@@ -25,6 +25,25 @@ export default class GameCache implements IDisposable {
         }
 
         return this;
+    }
+
+    // Zones
+    public setZone(zone: number, terrain: IWorldTerrain[]): this {
+        this.zones.set(zone, terrain)
+
+        return this;
+    }
+
+    public getZone(zone: number): IWorldTerrain[] | null {
+        if (this.zones.has(zone)) {
+            return this.zones.get(zone);
+        }
+
+        return null;
+    }
+
+    public hasZone(zone: number): boolean {
+        return this.zones.has(zone);
     }
 
     // Textures
@@ -38,17 +57,6 @@ export default class GameCache implements IDisposable {
 
     public getTexture(name: string): HTMLImageElement | null {
         return this.textures.get(name) || null;
-    }
-    
-    // Terrain
-    public getTerrains(): ReadonlyMap<UniqueId, IWorldTerrain> {
-        return this.terrain;
-    }
-
-    public setTerrain(terrain: IWorldTerrain): this {
-        this.terrain.set(terrain.id, terrain);
-
-        return this;
     }
 
     // Entities

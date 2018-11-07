@@ -78,4 +78,8 @@ export default abstract class GameMath {
     public static calculateTotalBlocks(start: IVector, end: IVector): number {
         return (start.x + end.x) * (start.y + end.y);
     }
+
+    public static isValidZone(zone: number): boolean {
+        return zone >= 0 && zone <= 9 && zone % 1 === 0;
+    }
 }

@@ -8,6 +8,8 @@ import http, {Server} from "http";
 import path from "path";
 import express from "express";
 import {OriginVector} from "./core/constants";
+import TerrainGenerator, { ITerrainLayer } from "./terrain-generator/terrain-generator";
+import GameMath from "../public-api/math";
 
 const port: number = parseInt(process.env.PORT as string) || 80;
 const clientRoot: string = path.join(__dirname, "../../", "client");
@@ -22,6 +24,29 @@ app.use(express.static(clientRoot));
 // Data/Local Cache
 const entities: Map<UniqueId, IWorldEntity> = new Map();
 const terrains: Map<string, IWorldTerrain> = new Map();
+const map: Map<number, IWorldTerrain[]> = new Map();
+
+// Default map terrain layers
+const defaultLayer: ITerrainLayer = {
+    type: TerrainType.Stone,
+    chance: 35,
+    columns: 100,
+    
+    start: {
+        x: 0,
+        y: 0
+    },
+
+    end: {
+        x: 100,
+        y: 100
+    },
+
+    groupingFactor: 4
+};
+
+// Generate intial block
+map.set(0, new TerrainGenerator([defaultLayer], 0).generate());
 
 socket.on(Events.Connection, (client) => {
     let auth: UniqueId | null = null;
@@ -65,6 +90,25 @@ socket.on(Events.Connection, (client) => {
         }
 
         registerEntity(Game.createEntity(type, auth, position));
+    });
+
+    client.on(Events.GetTerrainMap, (zone: number) => {
+        if (!auth) {
+            client.emit(Events.NotAuthorized);
+
+            return;
+        }
+        else if (!GameMath.isValidZone(zone)) {
+            client.emit(Events.BadRequest);
+
+            return;
+        }
+
+        if (!map.has(zone)) {
+            map.set(zone, new TerrainGenerator([defaultLayer], zone).generate());
+        }
+
+        client.emit(Events.GetTerrainMap, map.get(zone), zone);
     });
 
     client.on(Events.GetActiveWorldZone, () => {

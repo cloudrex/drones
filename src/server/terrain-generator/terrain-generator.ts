@@ -1,6 +1,7 @@
 import {TerrainType, IWorldTerrain, IVector} from "../../public-api/entities";
 import GameMath from "../../public-api/math";
 import Game from "../core/game";
+import Utils from "../../public-api/utils";
 
 export type ITerrainLayer = {
     readonly start: IVector;
@@ -43,13 +44,13 @@ export default class TerrainGenerator {
                 row++;
             }
 
-            //if (Utils.getRandomInt(0, 100 - Math.round(layer.chance)) === 0) {
+            if (Utils.getRandomInt(0, 100 - Math.round(layer.chance)) === 0) {
                 result.push(Game.createTerrain(layer.type, {
                     x: row,
                     y: i / layer.columns,
                     zone
                 }));
-            //}
+            }
         }
 
         return result;

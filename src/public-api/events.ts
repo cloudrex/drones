@@ -22,5 +22,6 @@ export enum Events {
 
     // Game -> Terrain
     SpawnTerrain = "spawn-terrain",
-    FillTerrain = "fill-terrain"
+    FillTerrain = "fill-terrain",
+    GetTerrainMap = "get-terrain-map"
 }

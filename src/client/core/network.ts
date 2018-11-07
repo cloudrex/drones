@@ -23,7 +23,16 @@ export default class GameNetwork {
         });
 
         this.socket.on(Events.Authenticate, (id: UniqueId) => {
-            console.log(`Authenticated @ ${id}`)
+            console.log(`Authenticated @ ${id}`);
+            
+            // Request initial zone
+            this.socket.emit(Events.GetTerrainMap, 0);
+        });
+
+        this.socket.on(Events.GetTerrainMap, (terrain: IWorldTerrain[], zone: number) => {
+            this.cache.setZone(zone, terrain);
+
+            console.log("Loaded zone", zone, terrain);
         });
 
         // TODO: Check if in field of vision before adding
@@ -57,10 +66,14 @@ export default class GameNetwork {
         });
 
         this.socket.on(Events.SpawnTerrain, (terrain: IWorldTerrain) => {
+            if (!this.cache.hasZone(terrain.position.zone)) {
+                return;
+            }
+
             console.log(`Added terrain @ ${terrain.id}`);
 
-            // TODO: Consider creating method to do this
-            this.cache.setTerrain({
+            // TODO: Consider creating method to do this?
+            this.cache.getZone(terrain.position.zone).push({
                 ...terrain,
 
                 position: {
