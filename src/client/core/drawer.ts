@@ -40,7 +40,11 @@ export default class Drawer {
     }
 
     public terrain(): this {
-        const zone: IWorldTerrain[] = this.game.cache.getZone(this.game.getActiveZone());
+        const zone: IWorldTerrain[] | null = this.game.cache.getZone(this.game.getActiveZone());
+
+        if (zone === null) {
+            return this;
+        }
         
         // TODO: Cache images (if using the same texture over and over again)
         for (let i: number = 0; i < zone.length; i++) {

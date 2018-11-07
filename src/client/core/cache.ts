@@ -36,7 +36,7 @@ export default class GameCache implements IDisposable {
 
     public getZone(zone: number): IWorldTerrain[] | null {
         if (this.zones.has(zone)) {
-            return this.zones.get(zone);
+            return this.zones.get(zone) || null;
         }
 
         return null;

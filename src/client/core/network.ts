@@ -17,7 +17,7 @@ export default class GameNetwork {
     public init(): this {
         // Setup events
         this.socket.on(Events.AuthenticateFailed, () => {
-            alert("auth failed");
+            alert("Auth failed!");
         });
 
         this.socket.on(Events.Authenticate, (id: UniqueId) => {
@@ -68,10 +68,10 @@ export default class GameNetwork {
                 return;
             }
 
-            console.log(`Added terrain @ ${terrain.id}`);
+            const zone: IWorldTerrain[] = this.game.cache.getZone(terrain.position.zone) as IWorldTerrain[];
 
             // TODO: Consider creating method to do this?
-            this.game.cache.getZone(terrain.position.zone).push({
+            zone.push({
                 ...terrain,
 
                 position: {
@@ -79,6 +79,8 @@ export default class GameNetwork {
                     ...Utils.calculateAbsPosition(terrain.position, this.game.dimensions)
                 }
             });
+
+            console.log(`Added terrain @ ${terrain.id}`);
         });
 
         this.socket.on(Events.BadRequest, () => {
