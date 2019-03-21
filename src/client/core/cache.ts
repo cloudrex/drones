@@ -1,6 +1,6 @@
-import {UniqueId} from "../../public-api/account";
-import {IWorldEntity, IWorldTerrain} from "../../public-api/entities";
-import {IDisposable} from "../../public-api/helpers";
+import {UniqueId} from "../../publicApi/account";
+import {IWorldEntity, IWorldTerrain} from "../../publicApi/entities";
+import {IDisposable} from "../../publicApi/helpers";
 import Assets from "./assets";
 
 const textures: string[] = [

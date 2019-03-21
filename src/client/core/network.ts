@@ -1,8 +1,8 @@
-import {IAuthCredentials, UniqueId} from "../../public-api/account";
-import {Events} from "../../public-api/events";
-import {IWorldEntity, EntityType, IVector, IWorldTerrain} from "../../public-api/entities";
-import Utils from "../../public-api/utils";
-import GameMath from "../../public-api/math";
+import {IAuthCredentials, UniqueId} from "../../publicApi/account";
+import {Events} from "../../publicApi/events";
+import {IWorldEntity, EntityType, IVector, IWorldTerrain} from "../../publicApi/entities";
+import Utils from "../../publicApi/utils";
+import GameMath from "../../publicApi/math";
 import GameClient from "./game";
 
 export default class GameNetwork {
@@ -22,7 +22,7 @@ export default class GameNetwork {
 
         this.socket.on(Events.Authenticate, (id: UniqueId) => {
             console.log(`Authenticated @ ${id}`);
-            
+
             // Request initial zone
             this.socket.emit(Events.GetTerrainMap, 0);
         });

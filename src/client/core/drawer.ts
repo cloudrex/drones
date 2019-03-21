@@ -1,7 +1,7 @@
-import {IVector, ITerrainModel, IWorldTerrain} from "../../public-api/entities";
-import GameMath from "../../public-api/math";
-import Utils from "../../public-api/utils";
-import {IEntityModel, BlockSize} from "../../public-api/entities";
+import {IVector, ITerrainModel, IWorldTerrain} from "../../publicApi/entities";
+import GameMath from "../../publicApi/math";
+import Utils from "../../publicApi/utils";
+import {IEntityModel, BlockSize} from "../../publicApi/entities";
 import GameClient from "./game";
 
 export default class Drawer {
@@ -30,7 +30,7 @@ export default class Drawer {
                     pos.y + BlockSize / 2,
                     BlockSize / 2, 0, 2 * Math.PI
                 );
-                
+
                 this.game.x.fill();
                 this.game.x.closePath();
             }
@@ -45,7 +45,7 @@ export default class Drawer {
         if (zone === null) {
             return this;
         }
-        
+
         // TODO: Cache images (if using the same texture over and over again)
         for (let i: number = 0; i < zone.length; i++) {
             const model: ITerrainModel = Utils.getTerrainModel(zone[i].type);

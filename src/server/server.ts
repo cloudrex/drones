@@ -1,15 +1,15 @@
 import SocketIO from "socket.io";
-import {UniqueId, IAuthCredentials} from "../public-api/account";
-import {Events} from "../public-api/events";
+import {UniqueId, IAuthCredentials} from "../publicApi/account";
+import {Events} from "../publicApi/events";
 import {SpecialUniqueIds} from "./network/structures";
-import {IWorldVector, IWorldEntity, EntityType, IVector, IWorldTerrain, TerrainType} from "../public-api/entities";
+import {IWorldVector, IWorldEntity, EntityType, IVector, IWorldTerrain, TerrainType} from "../publicApi/entities";
 import Game from "./core/game";
 import http, {Server} from "http";
 import path from "path";
 import express from "express";
 import {OriginVector} from "./core/constants";
-import TerrainGenerator, { ITerrainLayer } from "./terrain-generator/terrain-generator";
-import GameMath from "../public-api/math";
+import TerrainGenerator, {ITerrainLayer} from "./terrain-generator/terrain-generator";
+import GameMath from "../publicApi/math";
 
 const port: number = parseInt(process.env.PORT as string) || 80;
 const clientRoot: string = path.join(__dirname, "../../", "client");
@@ -31,7 +31,7 @@ const defaultLayer: ITerrainLayer = {
     type: TerrainType.Stone,
     chance: 35,
     columns: 100,
-    
+
     start: {
         x: 0,
         y: 0
@@ -50,7 +50,7 @@ map.set(0, new TerrainGenerator([defaultLayer], 0).generate());
 
 socket.on(Events.Connection, (client) => {
     let auth: UniqueId | null = null;
-    
+
     console.log("Client connected");
 
     client.on(Events.Authenticate, (credentials: IAuthCredentials) => {
@@ -59,7 +59,7 @@ socket.on(Events.Connection, (client) => {
 
             return;
         }
-        
+
         auth = SpecialUniqueIds.Admin;
         client.emit(Events.Authenticate, auth);
         client.emit(Events.Reset);

@@ -1,4 +1,4 @@
-import {IWorldVector} from "../../public-api/entities";
+import {IWorldVector} from "../../publicApi/entities";
 
 export const OriginVector: Readonly<IWorldVector> = {
     x: 0,

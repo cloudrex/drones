@@ -7,11 +7,11 @@ require("file-loader?name=[name].[ext]!../index.html");
 // Copy style.css to output
 require("file-loader?name=[name].[ext]!../style.css");
 
-import {IVector} from "../../public-api/entities";
+import {IVector} from "../../publicApi/entities";
 import GameDrawer from "./drawer";
 import GameCache from "./cache";
 import GameNetwork from "./network";
-import GameMath from "../../public-api/math";
+import GameMath from "../../publicApi/math";
 
 export default class GameClient {
     public readonly dimensions: IVector;
@@ -39,7 +39,7 @@ export default class GameClient {
             if (context === null) {
                 throw new Error("Could not retrieve canvas context");
             }
-            
+
             this.x = context;
         }
 
@@ -67,13 +67,13 @@ export default class GameClient {
 
     public async init(): Promise<void> {
         console.log("Game init");
-    
+
         // TODO:
         this.net.init().authenticate({
             username: "john",
             password: "doe"
         });
-    
+
         // Canvas events
         this.gameElm.onclick = (e) => {
             // TODO: Use pos
@@ -81,38 +81,38 @@ export default class GameClient {
                 x: e.offsetX,
                 y: e.offsetY
             };
-    
+
             this.net.moveEntity(window.prompt("id") as string, {
                 x: 1,
                 y: 1
             });
         };
-    
+
         this.gameElm.onmousemove = (e) => {
             this.lastMousePos = {
                 x: e.offsetX,
                 y: e.offsetY
             };
         };
-    
+
         await this.cache.loadAssets();
         window.requestAnimationFrame(this.update.bind(this));
     }
-    
+
     public update(timestamp: number): void {
         let deltaTime: number = timestamp - this.previousDeltaTime;
-    
+
         // Target positions
         for (let [id, entity] of this.cache.getEntities()) {
             if (entity.targetPosition !== undefined) {
                 const velocityTowards: IVector = GameMath.getVelocityTowards(entity.position, entity.targetPosition);
-    
+
                 entity.velocity = {
                     x: velocityTowards.x * entity.speed,
                     y: velocityTowards.y * entity.speed
                 };
             }
-    
+
             // Update entity position
             entity.position = {
                 x: entity.position.x + (entity.velocity.x * deltaTime),
@@ -120,17 +120,17 @@ export default class GameClient {
                 zone: entity.position.zone
             };
         }
-    
+
         // Re-draw
         this.draw();
-    
+
         // Save new timestamp
         this.previousDeltaTime = timestamp;
-    
+
         // Repeat
         window.requestAnimationFrame(this.update.bind(this));
     }
-    
+
     public draw(): void {
         this.drawer.background()
             .terrain()
@@ -140,7 +140,7 @@ export default class GameClient {
 
     public debug(): this {
         // Debugging code here
-        
+
         // Expose cache for debugging
         (global as any).cache = this.cache;
 

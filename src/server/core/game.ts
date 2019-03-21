@@ -1,6 +1,6 @@
 import {v1} from "uuid";
-import {IWorldEntity, EntityType, IWorldVector, TerrainType, IWorldTerrain} from "../../public-api/entities";
-import {UniqueId} from "../../public-api/account";
+import {IWorldEntity, EntityType, IWorldVector, TerrainType, IWorldTerrain} from "../../publicApi/entities";
+import {UniqueId} from "../../publicApi/account";
 
 export type ITerrainProperties = {
     speedChange?: number;
@@ -40,7 +40,7 @@ export default abstract class Game {
                 x: 0,
                 y: 0
             },
-            
+
             position,
             id: v1()
         };
